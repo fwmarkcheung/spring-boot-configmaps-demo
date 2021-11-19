@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class GreeterController {
 
     @Value("${greeter.message}")
-    private String greeterMessageFormat; 
+    private String greeterMessageFormat;
 
     @GetMapping("/greet/{user}")
     public String greet(@PathVariable("user") String user) {
-        String prefix = System.getenv().getOrDefault("GREETING_PREFIX", "Hi");
+        String prefix = System.getenv().getOrDefault("GREETER_PREFIX", "Hi");
         log.info("Prefix :{} and User:{}", prefix, user);
         if (prefix == null) {
             prefix = "Hello!";
