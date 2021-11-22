@@ -13,14 +13,23 @@ public class GreeterController {
     @Value("${greeter.message}")
     private String greeterMessageFormat;
 
+    @Value("${env}")
+    private String env;
+
     @GetMapping("/greet/{user}")
     public String greet(@PathVariable("user") String user) {
         String prefix = System.getenv().getOrDefault("GREETER_PREFIX", "Hi");
+        String envProfile = System.getenv().getOrDefault("SRPING_PROFILES_ACTIVE", "default");
         log.info("Prefix :{} and User:{}", prefix, user);
-        if (prefix == null) {
-            prefix = "Hello!";
-        }
+        log.info("EnvProfile:{}", envProfile);
+        log.info("env :{}", env);
 
-        return String.format(greeterMessageFormat, prefix, user);
+
+
+//        if (prefix == null) {
+//            prefix = "Hello!";
+//        }
+
+        return String.format(greeterMessageFormat, prefix, user, env);
     }
 }
