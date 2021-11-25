@@ -27,7 +27,7 @@ public class GreeterController {
         LOGGER.info("Prefix :{} and User:{}", prefix, user);
         LOGGER.info("EnvProfile:{}", envProfile);
         LOGGER.info("env :{}", env);
-
-        return String.format(greeterMessageFormat, prefix, user, env);
+        String version = "v1"
+        return String.format(greeterMessageFormat, prefix, user, env, version);
     }
 }
