@@ -20,6 +20,8 @@ public class GreeterController {
     @Value("${env}")
     private String env;
 
+    private String version = "v5";
+
     @GetMapping("/greet/{user}")
     public String greet(@PathVariable("user") String user) {
         String prefix = System.getenv().getOrDefault("GREETER_PREFIX", "Hi");
@@ -27,7 +29,6 @@ public class GreeterController {
         LOGGER.info("Prefix :{} and User:{}", prefix, user);
         LOGGER.info("EnvProfile:{}", envProfile);
         LOGGER.info("env :{}", env);
-        String version = "v4";
         LOGGER.info("version :{}", version);
         return String.format(greeterMessageFormat, prefix, user, env, version);
     }
