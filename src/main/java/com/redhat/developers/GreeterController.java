@@ -20,7 +20,7 @@ public class GreeterController {
     @Value("${env}")
     private String env;
 
-    private String version = "v1-pipeline-trigger";
+    private String version = "v1-test-pipeline=trigger";
 
     @GetMapping("/greet/{user}")
     public String greet(@PathVariable("user") String user) {
