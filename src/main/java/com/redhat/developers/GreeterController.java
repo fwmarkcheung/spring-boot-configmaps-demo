@@ -20,7 +20,7 @@ public class GreeterController {
     @Value("${env}")
     private String env;
 
-    private String version = "v4 - webhood trigger";
+    private String version = "v1 - webhood trigger testing";
 
     @GetMapping("/greet/{user}")
     public String greet(@PathVariable("user") String user) {
