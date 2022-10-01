@@ -1,0 +1,93 @@
+ConfigMap demo
+
+cd /Users/markcheung/JBossGigs/openshiftDemo/spring-boot-configmaps-demo
+
+mvn spring-boot:run
+
+localhost:8080/greet/mark
+
+ oc new-project mark-configmap-demo
+
+
+
+oc new-app openjdk-11-rhel8:1.0~https://github.com/fwmarkcheung/spring-boot-configmaps-demo.git
+
+# from from RH Catalog
+oc new-app registry.access.redhat.com/ubi8/openjdk-11:1.10-10~https://github.com/fwmarkcheung/spring-boot-configmaps-demo.git
+
+
+
+oc expose svc/spring-boot-configmaps-demo
+
+
+http://spring-boot-configmaps-demo-mark-configmap-demo.apps.rhcasalab.sandbox1385.opentlc.com/greet/mark
+
+Should show
+
+Hi mark! Spring Boot application.properties has been mounted as volume on Kubernetes! You are using default profile.
+
+
+create ConfigMap to override the settings
+
+
+oc create configmap my-config --from-env-file=./config/dev/app.env --dry-run=true -o yaml > dev-configmap.yaml
+
+oc apply -f dev-configmap.yaml
+
+oc set env --from=configmap/my-config  deployment/spring-boot-configmaps-demo
+
+oc rsh <app pod>
+
+env | grep GREETER
+
+With the config map applied
+
+Hola mark! Spring Boot application.properties has been mounted as volume on Kubernetes! You are using dev profile.
+
+
+changing the configmap
+
+
+oc edit cm/my-config
+oc rollout restart deployment/spring-boot-configmaps-demo
+
+
+
+Show ConfigMap as volume
+
+oc create configmap my-config-file --from-file=app.env --dry-run=true -o yaml > configmap-file.yml
+oc apply -f configmap-file.yml
+oc set volume deployment/spring-boot-configmaps-demo --add --name=v1 --mount-path=/deployments/data --configmap-name=my-config-file
+
+
+oc rsh <app pod>
+
+cat /deployments/data/app.env
+
+oc delete project mark-config-map-demo
+
+http://spring-boot-configmaps-demo-mark-config-map-demo.apps.rhcasalab.sandbox1385.opentlc.com/greet/mark
+
+
+
+Create cm from literal
+
+oc create configmap my-config  --from-literal=greeter.prefix="Hola" --from-literal=msg.prefix="Test Msg"
+
+oc get configmap my-config -oyaml
+
+oc set env --from=configmap/my-config  deployment/spring-boot-configmaps-demo
+
+oc describe deployment/spring-boot-configmaps-demo
+
+oc get pods -w
+
+
+ref
+
+https://github.com/redhat-developer-demos/spring-boot-configmaps-demo
+
+
+
+/deployments/spring-rest-hello-world-1.0.jar
+./BOOT-INF/classes/application.properties

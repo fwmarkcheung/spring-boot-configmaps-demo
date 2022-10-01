@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  app.env: |
+    greeter.prefix=Hola
+    msg.prefix=Test Msg
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: my-config-file
